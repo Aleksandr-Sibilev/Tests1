@@ -1,70 +1,54 @@
-# Tests1
-
-//Task_19
+// Задача 25: Напишите цикл, который принимает на вход два числа (A и B) и возводит число A в натуральную степень B.
 
 Console.Clear();
 
-void CheckPalindromicNumber(int number)
+Console.WriteLine("введите число A");
+int a = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine("введите число B");
+int b = Convert.ToInt32(Console.ReadLine());
+int step = a;
+
+for (int i = 1; i < b; i++)
 {
-    if(number >= 10000)
+step = step * a;
+}
+Console.WriteLine("A в степени B равно: " + step);
+
+// Задача 27: Напишите программу, которая принимает на вход число и выдаёт сумму цифр в числе.
+
+Console.Clear();
+
+Console.WriteLine("введите число");
+int i = Convert.ToInt32(Console.ReadLine());
+int sum = 0;
+while (i > 0)
+{
+int num = i % 10;
+i = i / 10;
+sum = sum + num;
+}
+Console.WriteLine("сумма всех цифр в числе равна: " + sum);
+
+// Задача 29: Напишите программу, которая задаёт массив из 8 элементов и выводит их на экран.
+
+Console.Clear();
+
+int N = 8;
+
+int[] SetArray(int x)
+{
+    int[] arr = new int[x];
+    for (int i = 0; i < x; i++)
     {
-        int division1 = number / 10000;
-        int remainder1 = number % 10;
- 
-            if(division1 == remainder1)
-            {
-                number = number / 10;
-                int division2 = (number / 100) % 10;
-                int remainder2 = number % 10;
-                if(division2 == remainder2)
-                    Console.WriteLine("Да");
-            }
-            else 
-            Console.WriteLine("Нет");
-         
+        arr[i] = new Random().Next(1, 100);
     }
-    else
-    Console.WriteLine("Некорректное число!");
+    return arr;
 }
- 
-Console.WriteLine("Введите пятизначное число:");
-int number = int.Parse(Console.ReadLine()!);
-CheckPalindromicNumber(number);
 
-//Task_21
-
-int x1 = ReadInt("Введите координату X первой точки: ");
-int y1 = ReadInt("Введите координату Y первой точки: ");
-int z1 = ReadInt("Введите координату Z первой точки: ");
-int x2 = ReadInt("Введите координату X второй точки: ");
-int y2 = ReadInt("Введите координату Y второй точки: ");
-int z2 = ReadInt("Введите координату Z второй точки: ");
-
-int A = x2 - x1;
-int B = y2 - y1;
-int C = z1 - z2;
-
-double length = Math.Sqrt(A * A + B * B + C * C);
-Console.WriteLine($"Длинна отрезка {length}");
-
-int ReadInt(string message)
+void PrintArray(int[] array)
 {
-    Console.Write(message);
-    return Convert.ToInt32(Console.ReadLine());
+    for (int i = 0; i < array.Length; i++)
+        System.Console.Write($"{array[i]} ");
 }
 
-// Task 23
-
-int number = ReadInt("Введи число N: ");
-
-for (int i = 1; i <= number; i++)
-{ 
-    Console.Write($"{i*i*i} ");
-}
-
-
-int ReadInt(string message)
-{
-    Console.Write(message);
-    return Convert.ToInt32(Console.ReadLine());
-}
+PrintArray(SetArray(N));
