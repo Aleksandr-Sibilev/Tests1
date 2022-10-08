@@ -1,120 +1,109 @@
-// Task 34
-
-
-Console.Clear();
-
-Console.WriteLine("Введите размер массива:  ");
-int size = Convert.ToInt32(Console.ReadLine());
-int[] numbers = new int[size];
-FillArrayRandomNumbers(numbers);
-Console.WriteLine("массив: ");
-PrintArray(numbers);
-int count = 0;
-
-for (int z = 0; z < numbers.Length; z++)
-if (numbers[z] % 2 == 0)
-count++;
-
-Console.WriteLine($"всего {numbers.Length} чисел, {count} из них чётные");
-
-void FillArrayRandomNumbers(int[] numbers)
-{
-    for(int i = 0; i < numbers.Length; i++)
-    {
-        numbers[i] = new Random().Next(100,1000);
-    }
-}
-void PrintArray(int[] numbers)
-{
-    Console.Write("[ ");
-    for(int i = 0; i < numbers.Length; i++)
-    {
-        Console.Write(numbers[i] + " ");
-    }
-    Console.Write("]");
-    Console.WriteLine();
-}
-
-
-//Task 36
-
+// Задача 41
 
 Console.Clear();
-
-Console.WriteLine("Введите размер массива  ");
-int size = Convert.ToInt32(Console.ReadLine());
-int[] numbers = new int[size];
-FillArrayRandomNumbers(numbers);
-Console.WriteLine("массив: ");
+Console.Write("Введите числа через запятую: ");
+int[] numbers = StringToNum(Console.ReadLine());
 PrintArray(numbers);
 int sum = 0;
-
-for (int z = 0; z < numbers.Length; z+=2)
-    sum = sum + numbers[z];
-
-    Console.WriteLine($"всего {numbers.Length} чисел, сумма элементов cтоящих на нечётных позициях = {sum}");
-
-void FillArrayRandomNumbers(int[] numbers)
+for (int i = 0; i < numbers.Length; i++)
 {
-    for(int i = 0; i < numbers.Length; i++)
-        {
-            numbers[i] = new Random().Next(1,10);
-        }
+    if (numbers[i] > 0)
+    {
+        sum++;
+    }
 }
-void PrintArray(int[] numbers)
+Console.WriteLine();
+Console.WriteLine($"количество значений больше 0 = {sum}");
+
+int[] StringToNum(string input)
+{
+    int count = 1;
+    for (int i = 0; i < input.Length; i++)
+    {
+        if (input[i] == ',')
+        {
+            count++;
+        }
+    }
+
+    int[] numbers = new int [count];
+    int index = 0;
+
+    for (int i = 0; i < input.Length; i++)
+    {
+        string temp = "";
+
+        while (input [i] != ',')
+        {
+        if(i != input.Length - 1)
+        {
+            temp += input [i].ToString();
+            i++;
+        }
+        else
+        {
+            temp += input [i].ToString();
+            break;
+        }
+        }
+        numbers[index] = Convert.ToInt32(temp);
+        index++;
+    }
+    return numbers;
+}
+
+void PrintArray(int[] array)
 {
     Console.Write("[ ");
-    for(int i = 0; i < numbers.Length; i++)
-        {
-            Console.Write(numbers[i] + " ");
-        }
+    for (int i = 0; i < array.Length; i++)
+    {
+        Console.Write(array[i] + " ");
+    }
     Console.Write("]");
-    Console.WriteLine();
 }
 
-
-// Task 38
+// Задача 43
 
 Console.Clear();
+double[,] coeff = new double[2, 2];
+double[] crossPoint = new double[2];
 
-Console.WriteLine("Введите размер массива  ");
-int size = Convert.ToInt32(Console.ReadLine());
-double[] numbers = new double[size];
-FillArrayRandomNumbers(numbers);
-Console.WriteLine("массив: ");
-PrintArray(numbers);
-double min = Int32.MaxValue;
-double max = Int32.MinValue;
-
-for (int z = 0; z < numbers.Length; z++)
-{
-    if (numbers[z] > max)
-        {
-            max = numbers[z];
-        }
-    if (numbers[z] < min)
-        {
-            min = numbers[z];
-        }
+void InputCoefficients(){
+  for (int i = 0; i < coeff.GetLength(0); i++)
+  {
+    Console.Write($"Введите коэффициенты {i+1}-го уравнения (y = k * x + b):\n");
+    for (int j = 0; j < coeff.GetLength(1); j++)
+    {
+      if(j==0) Console.Write($"Введите коэффициент k: ");
+      else Console.Write($"Введите коэффициент b: ");
+      coeff[i,j] = Convert.ToInt32(Console.ReadLine());
+    }
+  }
 }
 
-Console.WriteLine($"всего {numbers.Length} чисел. Максимальное значение = {max}, минимальное значение = {min}");
-Console.WriteLine($"Разница между максимальным и минимальным значением = {max - min}");
+double[] Decision(double[,] coeff)
+{
+  crossPoint[0] = (coeff[1,1] - coeff[0,1]) / (coeff[0,0] - coeff[1,0]);
+  crossPoint[1] = crossPoint[0] * coeff[0,0] + coeff[0,1];
+  return crossPoint;
+}
 
-void FillArrayRandomNumbers(double[] numbers)
+void OutputResponse(double[,] coeff)
 {
-    for(int i = 0; i < numbers.Length; i++)
-        {
-            numbers[i] = Convert.ToDouble(new Random().Next(100,1000)) / 100;
-        }
+  if (coeff[0,0] == coeff[1,0] && coeff[0,1] == coeff[1,1]) 
+  {
+    Console.Write($"\nПрямые совпадают");
+  }
+  else if (coeff[0,0] == coeff[1,0] && coeff[0,1] != coeff[1,1]) 
+  {
+    Console.Write($"\nПрямые параллельны");
+  }
+  else 
+  {
+    Decision(coeff);
+    Console.Write($"\nТочка пересечения прямых: ({crossPoint[0]}, {crossPoint[1]})");
+  }
 }
-void PrintArray(double[] numbers)
-{
-    Console.Write("[ ");
-    for(int i = 0; i < numbers.Length; i++)
-        {
-            Console.Write(numbers[i] + " ");
-        }
-    Console.Write("]");
-    Console.WriteLine();
-}
+
+InputCoefficients();
+OutputResponse(coeff);
