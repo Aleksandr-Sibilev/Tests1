@@ -1,109 +1,131 @@
-// Задача 41
+// Задача 47
 
 Console.Clear();
-Console.Write("Введите числа через запятую: ");
-int[] numbers = StringToNum(Console.ReadLine());
+
+Console.WriteLine("введите количество строк");
+int linesVol = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine("введите количество столбцов");
+int columnsVol = Convert.ToInt32(Console.ReadLine());
+double[,] numbers = new double[linesVol, columnsVol];
+FillArrayRandomNumbers(numbers);
 PrintArray(numbers);
-int sum = 0;
-for (int i = 0; i < numbers.Length; i++)
+
+void FillArrayRandomNumbers(double[,] array)
 {
-    if (numbers[i] > 0)
+    for (int i = 0; i < array.GetLength(0); i++)
     {
-        sum++;
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            array[i, j] = Convert.ToDouble(new Random().Next(-100, 100)) / 10;
+        }
     }
+}
+
+void PrintArray(double[,] array)
+{
+    for (int i = 0; i < array.GetLength(0); i++)
+    {
+        Console.Write("[ ");
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            Console.Write(array[i, j] + " ");
+        }
+        Console.Write("]");
+        Console.WriteLine("");
+    }
+}
+
+
+// Задача 50
+
+Console.Clear();
+
+int rows = ReadInt("Введите индекс строки: ");
+int colums = ReadInt("Введите индекс столбца: ");
+int[,] numbers = new int[6, 8];
+FillArray2D(numbers);
+PrintArray2D(numbers);
+
+if (rows < numbers.GetLength(0) && colums < numbers.GetLength(1)) Console.WriteLine(numbers[rows, colums]);
+else Console.WriteLine($"{rows}{colums} -> такого числа в массиве нет");
+
+void FillArray2D(int[,] array)
+{
+    for (int i = 0; i < array.GetLength(0); i++)
+    {
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            array[i, j] = new Random().Next(1, 10);
+        }
+    }
+}
+
+void PrintArray2D(int[,] array)
+{
+    for (int i = 0; i < array.GetLength(0); i++)
+    {
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            Console.Write(array[i, j] + " ");
+        }
+        Console.WriteLine();
+    }
+    Console.WriteLine();
+}
+
+int ReadInt(string message)
+{
+    Console.Write(message);
+    return Convert.ToInt32(Console.ReadLine());
+}
+
+// Задача 52
+
+Console.Clear();
+
+Console.WriteLine("введите количество строк");
+int n = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine("введите количество столбцов");
+int m = Convert.ToInt32(Console.ReadLine());
+
+int[,] numbers = new int[n, m];
+FillArrayRandomNumbers(numbers);
+
+for (int j = 0; j < numbers.GetLength(1); j++)
+{
+    double avarage = 0;
+    for (int i = 0; i < numbers.GetLength(0); i++)
+    {
+        avarage = (avarage + numbers[i, j]);
+    }
+    avarage = avarage / n;
+    Console.Write(avarage + "; ");
 }
 Console.WriteLine();
-Console.WriteLine($"количество значений больше 0 = {sum}");
+PrintArray(numbers);
 
-int[] StringToNum(string input)
+void FillArrayRandomNumbers(int[,] array)
 {
-    int count = 1;
-    for (int i = 0; i < input.Length; i++)
+    for (int i = 0; i < array.GetLength(0); i++)
     {
-        if (input[i] == ',')
+        for (int j = 0; j < array.GetLength(1); j++)
         {
-            count++;
+            array[i, j] = new Random().Next(0, 10);
         }
     }
-
-    int[] numbers = new int [count];
-    int index = 0;
-
-    for (int i = 0; i < input.Length; i++)
-    {
-        string temp = "";
-
-        while (input [i] != ',')
-        {
-        if(i != input.Length - 1)
-        {
-            temp += input [i].ToString();
-            i++;
-        }
-        else
-        {
-            temp += input [i].ToString();
-            break;
-        }
-        }
-        numbers[index] = Convert.ToInt32(temp);
-        index++;
-    }
-    return numbers;
 }
 
-void PrintArray(int[] array)
+void PrintArray(int[,] array)
 {
-    Console.Write("[ ");
-    for (int i = 0; i < array.Length; i++)
+
+    for (int i = 0; i < array.GetLength(0); i++)
     {
-        Console.Write(array[i] + " ");
+        Console.Write("[ ");
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            Console.Write(array[i, j] + " ");
+        }
+        Console.Write("]");
+        Console.WriteLine("");
     }
-    Console.Write("]");
 }
-
-// Задача 43
-
-Console.Clear();
-double[,] coeff = new double[2, 2];
-double[] crossPoint = new double[2];
-
-void InputCoefficients(){
-  for (int i = 0; i < coeff.GetLength(0); i++)
-  {
-    Console.Write($"Введите коэффициенты {i+1}-го уравнения (y = k * x + b):\n");
-    for (int j = 0; j < coeff.GetLength(1); j++)
-    {
-      if(j==0) Console.Write($"Введите коэффициент k: ");
-      else Console.Write($"Введите коэффициент b: ");
-      coeff[i,j] = Convert.ToInt32(Console.ReadLine());
-    }
-  }
-}
-
-double[] Decision(double[,] coeff)
-{
-  crossPoint[0] = (coeff[1,1] - coeff[0,1]) / (coeff[0,0] - coeff[1,0]);
-  crossPoint[1] = crossPoint[0] * coeff[0,0] + coeff[0,1];
-  return crossPoint;
-}
-
-void OutputResponse(double[,] coeff)
-{
-  if (coeff[0,0] == coeff[1,0] && coeff[0,1] == coeff[1,1]) 
-  {
-    Console.Write($"\nПрямые совпадают");
-  }
-  else if (coeff[0,0] == coeff[1,0] && coeff[0,1] != coeff[1,1]) 
-  {
-    Console.Write($"\nПрямые параллельны");
-  }
-  else 
-  {
-    Decision(coeff);
-    Console.Write($"\nТочка пересечения прямых: ({crossPoint[0]}, {crossPoint[1]})");
-  }
-}
-
-InputCoefficients();
-OutputResponse(coeff);
